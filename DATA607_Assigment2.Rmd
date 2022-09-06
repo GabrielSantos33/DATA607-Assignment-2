@@ -1,0 +1,92 @@
+---
+title: "DATA607_Assigment2"
+author: "Gabriel Santos"
+date: '2022-09-06'
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(RCurl)
+library(plyr)
+library(dplyr)
+library(visdat)
+```
+
+## Assignement 2 - SQL and R
+
+Choose six recent popular movies. Ask at least five people that you know (friends, family, classmates, imaginary friends) to rate each of these movie that they have seen on a scale of 1 to 5. Take the results (observations) and store them in a SQL database. Load the information into an R dataframe.
+
+Your deliverables should include your SQL scripts and your R Markdown code, posted to GitHub.
+
+This is by design a very open ended assignment. A variety of reasonable approaches are acceptable. You can (and should) blank out your SQL password if your solution requires it; otherwise, full credit requires that your code is “reproducible,” with the assumption that I have the same database server and R software.
+You may work in a small group.
+
+## 1 Connect R to MySQL
+Note: User name and password is hid with comment echo=FALSE.
+```{r password, echo=FALSE}
+usr <- 'root'
+pwd <- '!Sysadm123'
+```
+
+```{r SQL Connection}
+library(kableExtra)
+library(RMySQL)
+library(RODBC)
+conn <- dbConnect(MySQL(), user= usr, password = pwd, dbname='data607', host='localhost')
+```
+
+## 2 Prepare the required data set and store it in MySQL
+
+The data set is store in MySQL with the SQL script in the link below. 
+
+[Link to Github](https://raw.githubusercontent.com/oggyluky11/DATA607-Assignment-2/master/Movie%20data.sql)
+
+An alternate way is to upload the data set to MySQL through R.
+```{r SQL Write SQL Table}
+movies = read.csv("https://raw.githubusercontent.com/oggyluky11/DATA607-Assignment-2/master/Movies.csv")
+#Be cautious with argument OVERWRITE when executing dbWriteTable function, original data table in MySQL would be overwriten if table with identical name exists.
+dbWriteTable(conn,"movies",movies, row.names = FALSE, overwrite = TRUE)
+```
+## 3 Load the data set into R as dataframe
+```{r Read SQL table as dataframe}
+SQLMovieData <- dbGetQuery(conn, "select * from movies")
+SQLMovieData
+```
+
+
+## 4 Visualization on the data set
+Unpivot the original data set, making movie names as one column factor.
+```{r data manlipulation}
+library(reshape2)
+ReshapedData <-melt(SQLMovieData, id.vars = c("Friend"))
+names(ReshapedData)[2:3]<- c("Movie", "Rating")
+ReshapedData$Rating<-as.numeric(ReshapedData$Rating)
+ReshapedData
+```
+
+
+Plot of Ratings by each rator, rating score = 0 stand for null value (the rator haven't watch the movie so no rating is given).
+```{r Plot 1}
+library(ggplot2)
+ggplot(data=ReshapedData, aes(x=Movie, y = Rating, fill = Movie, label = Rating))+
+    geom_bar(stat="identity")+ 
+    facet_wrap(~Friend)+
+    ggtitle("Movie Ratings by Name of Rators")+
+    theme(axis.text.x = element_blank(),plot.title = element_text(hjust=0.5),legend.position = "right")
+```
+
+
+
+Plot of average rating of each movie (There are various ways to manlipulate null values, but in this assignment they are ignored)
+```{r Plot 2}
+PivotData = aggregate(Rating ~ Movie, data=ReshapedData,mean)
+ggplot(data=PivotData, aes(x=(reorder(Movie, Rating)), y = Rating, label = Rating))+
+  geom_bar(stat="identity", fill="#FF6666")+
+  coord_flip()+
+  labs(title="Average Movie Rating", x= "Rating", y = "Movie")+
+  geom_text(aes(label=round(Rating, digits = 2)))+
+  theme(plot.title=element_text(hjust=0.5))
+```
