@@ -42,14 +42,15 @@ conn <- dbConnect(MySQL(), user= usr, password = pwd, dbname='data607', host='lo
 
 The data set is store in MySQL with the SQL script in the link below. 
 
-[Link to Github](https://raw.githubusercontent.com/oggyluky11/DATA607-Assignment-2/master/Movie%20data.sql)
+[Link to Github](https://github.com/GabrielSantos33/DATA607-Assignment-2/blob/main/Movie_data.sql)
 
 An alternate way is to upload the data set to MySQL through R.
 ```{r SQL Write SQL Table}
-movies = read.csv("https://raw.githubusercontent.com/oggyluky11/DATA607-Assignment-2/master/Movies.csv")
-#Be cautious with argument OVERWRITE when executing dbWriteTable function, original data table in MySQL would be overwriten if table with identical name exists.
+movies = read.csv("https://github.com/GabrielSantos33/DATA607-Assignment-2/blob/main/Movies.csv")
+
 dbWriteTable(conn,"movies",movies, row.names = FALSE, overwrite = TRUE)
 ```
+
 ## 3 Load the data set into R as dataframe
 ```{r Read SQL table as dataframe}
 SQLMovieData <- dbGetQuery(conn, "select * from movies")
