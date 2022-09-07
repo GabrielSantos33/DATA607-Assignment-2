@@ -1,0 +1,31 @@
+movie,Fri_name,Stars
+Eternals,Ahmed,4
+Shang-Chi,Ahmed,4
+"Spider-Man No Way Home",Ahmed,5
+Dune,Ahmed,3
+"Venom ",Ahmed,1
+"No Time to Die",Ahmed,NULL
+Eternals,Alexa,2
+Shang-Chi,Alexa,3
+"Spider-Man No Way Home",Alexa,4
+Dune,Alexa,NULL
+"Venom ",Alexa,2
+"No Time to Die",Alexa,NULL
+Eternals,David,2
+Shang-Chi,David,4
+"Spider-Man No Way Home",David,5
+Dune,David,4
+"Venom ",David,2
+"No Time to Die",David,NULL
+Eternals,Jake,3
+Shang-Chi,Jake,3
+"Spider-Man No Way Home",Jake,5
+Dune,Jake,3
+"Venom ",Jake,4
+"No Time to Die",Jake,NULL
+Eternals,Robin,3
+Shang-Chi,Robin,4
+"Spider-Man No Way Home",Robin,5
+Dune,Robin,2
+"Venom ",Robin,2
+"No Time to Die",Robin,3
