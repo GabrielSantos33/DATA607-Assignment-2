@@ -1,8 +1,10 @@
 ---
-title: "DATA607_test"
+title: "DATA607_Assignment SQL and R"
 author: "Gabriel Santos"
 date: '2022-09-07'
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r }
