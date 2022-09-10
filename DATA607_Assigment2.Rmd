@@ -1,34 +1,37 @@
 ---
 title: "DATA607_Assignment SQL and R"
 author: "Gabriel Santos"
-date: '2022-09-07'
+date: '2022-09-10'
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r }
 library(tidyverse)
 ```
 
-###Calling the necessary packages
+### *Calling the necessary packages*
 
 ```{r }
 library(DBI)
 library(RMySQL)
 library(RODBC)
 ```
-### Establish MySQL connection
+
+### *Establish MySQL connection*
 
 ```{r }
 mydb = dbConnect(MySQL(), user='root', password='Sysadm123', dbname='movie_data', host='localhost')
 ```
-### Table list
+
+### *Table list*
+
 ```{r }
 dbListTables(mydb)
 ```
 
-## Table fields
+### *Table fields*
 
 ```{r }
 dbListFields(mydb, 'movie_data.people')
@@ -41,25 +44,32 @@ dbListFields(mydb, 'movie_data.PeopleMovieRatingsResults')
 PeopleMoviesRatings = dbSendQuery(mydb, "select * from movie_data.PeopleMoviesRatings")
 
 ```
-## Fetch table people from database
+
+### *Fetch table people from database*
+
 ```{r }
 PeopleMoviesRatings = fetch(PeopleMoviesRatings, n = 5)
 print(PeopleMoviesRatings)                
 ```
 
-## movies table fields
+### *movies table fields*
+
 ```{r }
 
 ```
-## Reading a csv file to R
-#### I exported my sq data into a csv file and I placed the csv file on Github. I then made R read the csv file on Github and then I placed all that data into a data frame called mysql. I then took a look at the csv file to make sure I had the correct csv file read.
+
+## *Reading a csv file to R*
+
+#### *I exported my sq data into a csv file and I placed the csv file on Github. I then made R read the csv file on Github.* 
 
 ```{r }
 mysql <- read.csv("https://raw.githubusercontent.com/GabrielSantos33/DATA607-Assignment-2/main/movie_ratings.csv",header=TRUE,sep=",")
 head(mysql)
 ```
-## Average Rating of Movies My Friends Watched
-#### I was curious on what the average rating was between movies that my friends had watched.I first filtered out the null values and then I had to make the chr values under Stars into integer values to calculate the average.
+
+### *Average Rating of Movies My Friends Watched*
+
+#### *I first filtered out the null values and then I had to make the chr values under Stars into integer values to calculate the average.To know the average rating among the movies my friends had seen.*
 
 ```{r}
 avg_mov <- mysql %>%
@@ -68,7 +78,7 @@ avg_mov <- mysql %>%
   summarise(avg= mean(as.integer(Stars)))
 avg_mov
 ```
-### Spider-Man was watched by all my friends and they also rated it very highly with a rating of 4.8
+### *Spider-Man was watched by all my friends and they also rated it very highly with a rating of 4.8*
 
 ```{r }
 library(ggplot2)
@@ -77,9 +87,11 @@ ggplot(data=avg_mov, aes(x=movie,y=avg , fill=movie)) +
   geom_bar(stat="identity")
 ```
 
-## Movies my Friends did not watched and how many didn’t watch.
-#### Movies my friends did not watch so I aggregated the data by movie, I filtered the condition where the stars were null and I counted how many people did not watch the movies.
-#### 4 of my friends did not watch No Time to Die and one of my friend did not watch dune.
+## *Movies my Friends did not watched and how many didn’t watch.*
+
+### *Movies my friends did not watch so I aggregated the data by movie, I filtered the condition where the stars were null and I counted how many people did not watch the movies.*
+
+### *4 of my friends did not watch No Time to Die and one of my friend did not watch dune.*
 
 ```{r }
 nul <- mysql %>%
@@ -90,7 +102,8 @@ nul
 ```
 
 
-## Results
+## *Results*
+
 ```{r }
 library(ggplot2)
 ggplot(data=nul,aes(x=movie,y=n,fill=movie)) +

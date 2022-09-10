@@ -11,9 +11,9 @@
 
 <meta name="author" content="Gabriel Santos" />
 
-<meta name="date" content="2022-09-07" />
+<meta name="date" content="2022-09-10" />
 
-<title>DATA607_test</title>
+<title>DATA607_Assignment SQL and R</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -363,9 +363,9 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">DATA607_test</h1>
+<h1 class="title toc-ignore">DATA607_Assignment SQL and R</h1>
 <h4 class="author">Gabriel Santos</h4>
-<h4 class="date">2022-09-07</h4>
+<h4 class="date">2022-09-10</h4>
 
 </div>
 
@@ -373,28 +373,30 @@ pre code {
 <pre class="r"><code>library(tidyverse)</code></pre>
 <pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
 ## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-## ✔ tibble  3.1.7     ✔ dplyr   1.0.9
+## ✔ tibble  3.1.8     ✔ dplyr   1.0.9
 ## ✔ tidyr   1.2.0     ✔ stringr 1.4.1
 ## ✔ readr   2.1.2     ✔ forcats 0.5.2
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<p>###Calling the necessary packages</p>
+<div id="calling-the-necessary-packages" class="section level3">
+<h3><em>Calling the necessary packages</em></h3>
 <pre class="r"><code>library(DBI)
 library(RMySQL)
 library(RODBC)</code></pre>
+</div>
 <div id="establish-mysql-connection" class="section level3">
-<h3>Establish MySQL connection</h3>
+<h3><em>Establish MySQL connection</em></h3>
 <pre class="r"><code>mydb = dbConnect(MySQL(), user=&#39;root&#39;, password=&#39;Sysadm123&#39;, dbname=&#39;movie_data&#39;, host=&#39;localhost&#39;)</code></pre>
 </div>
 <div id="table-list" class="section level3">
-<h3>Table list</h3>
+<h3><em>Table list</em></h3>
 <pre class="r"><code>dbListTables(mydb)</code></pre>
 <pre><code>## [1] &quot;movies&quot;                    &quot;people&quot;                   
 ## [3] &quot;peoplemovieratingsresults&quot; &quot;peoplemoviesratings&quot;</code></pre>
 </div>
-<div id="table-fields" class="section level2">
-<h2>Table fields</h2>
+<div id="table-fields" class="section level3">
+<h3><em>Table fields</em></h3>
 <pre class="r"><code>dbListFields(mydb, &#39;movie_data.people&#39;)</code></pre>
 <pre><code>## [1] &quot;NameID&quot;    &quot;FirstName&quot; &quot;LastName&quot;</code></pre>
 <pre class="r"><code>dbListFields(mydb, &#39;movie_data.movies&#39;)</code></pre>
@@ -405,8 +407,8 @@ library(RODBC)</code></pre>
 <pre><code>## [1] &quot;FirstName&quot;  &quot;LastName&quot;   &quot;MovieTitle&quot; &quot;Rating&quot;</code></pre>
 <pre class="r"><code>PeopleMoviesRatings = dbSendQuery(mydb, &quot;select * from movie_data.PeopleMoviesRatings&quot;)</code></pre>
 </div>
-<div id="fetch-table-people-from-database" class="section level2">
-<h2>Fetch table people from database</h2>
+<div id="fetch-table-people-from-database" class="section level3">
+<h3><em>Fetch table people from database</em></h3>
 <pre class="r"><code>PeopleMoviesRatings = fetch(PeopleMoviesRatings, n = 5)
 print(PeopleMoviesRatings)                </code></pre>
 <pre><code>##   RatingID NameID MovieID Rating
@@ -416,16 +418,14 @@ print(PeopleMoviesRatings)                </code></pre>
 ## 4        4      1       4      5
 ## 5        5      1       5      3</code></pre>
 </div>
-<div id="movies-table-fields" class="section level2">
-<h2>movies table fields</h2>
+<div id="movies-table-fields" class="section level3">
+<h3><em>movies table fields</em></h3>
 </div>
 <div id="reading-a-csv-file-to-r" class="section level2">
-<h2>Reading a csv file to R</h2>
-<div id="i-exported-my-sq-data-into-a-csv-file-and-i-placed-the-csv-file-on-github.-i-then-made-r-read-the-csv-file-on-github-and-then-i-placed-all-that-data-into-a-data-frame-called-mysql.-i-then-took-a-look-at-the-csv-file-to-make-sure-i-had-the-correct-csv-file-read." class="section level4">
-<h4>I exported my sq data into a csv file and I placed the csv file on
-Github. I then made R read the csv file on Github and then I placed all
-that data into a data frame called mysql. I then took a look at the csv
-file to make sure I had the correct csv file read.</h4>
+<h2><em>Reading a csv file to R</em></h2>
+<div id="i-exported-my-sq-data-into-a-csv-file-and-i-placed-the-csv-file-on-github.-i-then-made-r-read-the-csv-file-on-github." class="section level4">
+<h4><em>I exported my sq data into a csv file and I placed the csv file
+on Github. I then made R read the csv file on Github.</em></h4>
 <pre class="r"><code>mysql &lt;- read.csv(&quot;https://raw.githubusercontent.com/GabrielSantos33/DATA607-Assignment-2/main/movie_ratings.csv&quot;,header=TRUE,sep=&quot;,&quot;)
 head(mysql)</code></pre>
 <pre><code>##                    movie Fri_name Stars
@@ -436,14 +436,12 @@ head(mysql)</code></pre>
 ## 5                 Venom     Ahmed     1
 ## 6         No Time to Die    Ahmed  NULL</code></pre>
 </div>
-</div>
-<div id="average-rating-of-movies-my-friends-watched" class="section level2">
-<h2>Average Rating of Movies My Friends Watched</h2>
-<div id="i-was-curious-on-what-the-average-rating-was-between-movies-that-my-friends-had-watched.i-first-filtered-out-the-null-values-and-then-i-had-to-make-the-chr-values-under-stars-into-integer-values-to-calculate-the-average." class="section level4">
-<h4>I was curious on what the average rating was between movies that my
-friends had watched.I first filtered out the null values and then I had
-to make the chr values under Stars into integer values to calculate the
-average.</h4>
+<div id="average-rating-of-movies-my-friends-watched" class="section level3">
+<h3><em>Average Rating of Movies My Friends Watched</em></h3>
+<div id="i-first-filtered-out-the-null-values-and-then-i-had-to-make-the-chr-values-under-stars-into-integer-values-to-calculate-the-average.to-know-the-average-rating-among-the-movies-my-friends-had-seen." class="section level4">
+<h4><em>I first filtered out the null values and then I had to make the
+chr values under Stars into integer values to calculate the average.To
+know the average rating among the movies my friends had seen.</em></h4>
 <pre class="r"><code>avg_mov &lt;- mysql %&gt;%
   group_by(movie) %&gt;%
   filter(Stars != &quot;NULL&quot;) %&gt;%
@@ -459,9 +457,10 @@ avg_mov</code></pre>
 ## 5 &quot;Spider-Man No Way Home&quot;   4.8
 ## 6 &quot;Venom &quot;                   2.2</code></pre>
 </div>
+</div>
 <div id="spider-man-was-watched-by-all-my-friends-and-they-also-rated-it-very-highly-with-a-rating-of-4.8" class="section level3">
-<h3>Spider-Man was watched by all my friends and they also rated it very
-highly with a rating of 4.8</h3>
+<h3><em>Spider-Man was watched by all my friends and they also rated it
+very highly with a rating of 4.8</em></h3>
 <pre class="r"><code>library(ggplot2)
 ggplot(data=avg_mov, aes(x=movie,y=avg , fill=movie)) + 
   coord_flip() +
@@ -470,15 +469,16 @@ ggplot(data=avg_mov, aes(x=movie,y=avg , fill=movie)) +
 </div>
 </div>
 <div id="movies-my-friends-did-not-watched-and-how-many-didnt-watch." class="section level2">
-<h2>Movies my Friends did not watched and how many didn’t watch.</h2>
-<div id="movies-my-friends-did-not-watch-so-i-aggregated-the-data-by-movie-i-filtered-the-condition-where-the-stars-were-null-and-i-counted-how-many-people-did-not-watch-the-movies." class="section level4">
-<h4>Movies my friends did not watch so I aggregated the data by movie, I
-filtered the condition where the stars were null and I counted how many
-people did not watch the movies.</h4>
+<h2><em>Movies my Friends did not watched and how many didn’t
+watch.</em></h2>
+<div id="movies-my-friends-did-not-watch-so-i-aggregated-the-data-by-movie-i-filtered-the-condition-where-the-stars-were-null-and-i-counted-how-many-people-did-not-watch-the-movies." class="section level3">
+<h3><em>Movies my friends did not watch so I aggregated the data by
+movie, I filtered the condition where the stars were null and I counted
+how many people did not watch the movies.</em></h3>
 </div>
-<div id="of-my-friends-did-not-watch-no-time-to-die-and-one-of-my-friend-did-not-watch-dune." class="section level4">
-<h4>4 of my friends did not watch No Time to Die and one of my friend
-did not watch dune.</h4>
+<div id="of-my-friends-did-not-watch-no-time-to-die-and-one-of-my-friend-did-not-watch-dune." class="section level3">
+<h3><em>4 of my friends did not watch No Time to Die and one of my
+friend did not watch dune.</em></h3>
 <pre class="r"><code>nul &lt;- mysql %&gt;%
   group_by(movie) %&gt;%
   filter(Stars==&quot;NULL&quot;) %&gt;%
@@ -493,7 +493,7 @@ nul</code></pre>
 </div>
 </div>
 <div id="results" class="section level2">
-<h2>Results</h2>
+<h2><em>Results</em></h2>
 <pre class="r"><code>library(ggplot2)
 ggplot(data=nul,aes(x=movie,y=n,fill=movie)) +
   geom_bar(stat=&quot;Identity&quot;)</code></pre>
